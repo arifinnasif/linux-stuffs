@@ -1,0 +1,68 @@
+#!/bin/bash
+
+num=`date +"%u"`
+
+if [[ $num == "4" || $num == "5" ]]
+then
+	echo "No class today"
+	exit
+fi
+
+day=`date +"%a"`
+
+dayID="${day}ID"
+dayPASS="${day}PASS"
+dayCOURSE="${day}COURSE"
+dayTEACHER="${day}TEACHER"
+dayTIME="${day}TIME"
+file="$XDG_CONFIG_HOME/joinzoom"
+
+if ! [[ $1 =~ ^[0-9]+$ && $1 -gt 0 ]]
+then
+	exit "argument must be an integer and greater than 0"
+fi
+
+let n=$1+1
+ID=`grep $dayID $file | awk -v i="$n" '{print $i}'`
+PASS=`grep $dayPASS $file | awk -v i="$n" '{if($i=="#") $i=""; print $i}'`
+COURSE=`grep $dayCOURSE $file | awk -v i="$n" '{print $i}'`
+TEACHER=`grep $dayTEACHER $file | awk -v i="$n" '{print $i}'`
+TIME=`grep $dayTIME $file | awk -v i="$n" '{print $i}'`
+nextCOURSE=`grep $dayCOURSE $file | awk -v i="$((n+1))" '{print $i}'`
+nextTEACHER=`grep $dayTEACHER $file | awk -v i="$((n+1))" '{print $i}'`
+nextTIME=`grep $dayTIME $file | awk -v i="$((n+1))" '{print $i}'`
+
+if [[ $COURSE =~ ^! ]]
+then
+	COURSE=$(echo $COURSE | cut -c1-)
+	read -p 'This class is canceled. Would you still join? (y/n): ' '-d '
+	echo ""
+	if ! [[ ${REPLY} =~ ^[yY]$ ]]
+	then
+		exit
+	fi
+	CANCEL="(CANCELED) "
+fi
+
+if [[ $nextCOURSE =~ ^! ]]
+then
+	nextCOURSE=$(echo $nextCOURSE | cut -c1-)
+	nextCANCEL="(CANCELED) "
+fi
+
+if [[ $ID == "" ]]
+then
+	echo "No more class today"
+else
+	echo "($((n-1))) $CANCEL$COURSE by $TEACHER at $TIME"
+	if [[ $nextCOURSE != "" ]]
+	then
+		echo "up next: $nextCANCEL$nextCOURSE by $nextTEACHER at $nextTIME"
+	fi
+	if [[ $ID == "teams" ]]
+	then
+		echo "The class is on Teams"
+	else
+		/usr/bin/zoom --url="zoommtg://bdren.zoom.us/join?action=join&confno=$ID&pwd=$PASS"
+	fi
+fi
