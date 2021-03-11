@@ -23,11 +23,11 @@ Just a repo with some of the stuffs I found useful
 * **split.sh**(audiobook/split.sh) helps you split your favourite audiobook by chapters
     - Usage
     
-    ```
-    split.sh <audiobook file name> <file containing chapter starting time>
-    ```
+      ```
+      split.sh <audiobook file name> <file containing chapter starting time>
+      ```
     
   chapter starting time in file should be in this format:
-    ```
-    [chapter name] [starting time in hh:mm:ss]
-    ```
+      ```
+      [chapter name] [starting time in hh:mm:ss]
+      ```
