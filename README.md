@@ -18,4 +18,4 @@ Just a repo with some of the stuffs I found useful
       zoin 3
       ```
  
-* **record.sh**(screen-record/record.sh) is only here to intensify your linux ego; lets you flex on people that you are man enough to avoid obs, bandicam, camtasia and what not, yet record screen in style. I have written this script focusing on recording online classes. Please be sure to edit the output file directory. \[Warning: you might need to use pavucontrol if you wish to switch audio output device while recording]
+* **record.sh**(screen-record/record.sh) is only here to fuel your linux ego; lets you flex on people that you are man enough to avoid obs, bandicam, camtasia and what not, yet record screen in style. I have written this script focusing on recording online classes. Please be sure to edit the output file directory. \[Warning: you might need to use pavucontrol if you wish to switch audio output device while recording]
